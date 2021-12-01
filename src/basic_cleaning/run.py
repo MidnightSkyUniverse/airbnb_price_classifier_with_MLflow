@@ -34,7 +34,7 @@ def go(args):
     logging.info('Change format of last_review column from string to date')
     df['last_review'] = pd.to_datetime(df['last_review'])    
 
-    filename = "clean_sample.csv"
+    filename = args.output_artifact
     df.to_csv(filename, index=False)
 
     artifact = wandb.Artifact(
