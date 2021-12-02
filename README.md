@@ -6,6 +6,27 @@ to be retrained with the same cadence, necessitating an end-to-end pipeline that
 
 In this project you will build such a pipeline.
 
+### Notes to this release
+#### Future updates
+```
+# Drop entries where minimum_nights > 365
+idx = df['minimum_nights'].between(0,365,inclusive='both')
+df = df[idx].copy()
+```
+
+```
+# Drop entries which have not got a reivew since 2013
+idx = df['last_review'].gt(pd.Timestamp(2013, 1, 1, 12))
+df = df[idx].copy()
+```
+Those two steps will eliminate majority of entries with null cells
+EDA notebook contains scatterplot chart showing that most of entries that
+have not received any reviewes since 2012, have very low number of reviews
+#### Performance of this model
+MEA: 31.052
+MEA in test: 31.432
+
+
 ## Table of contents
 
 - [Introduction](#build-an-ML-Pipeline-for-Short-Term-Rental-Prices-in-NYC)
