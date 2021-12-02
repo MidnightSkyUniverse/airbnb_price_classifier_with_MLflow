@@ -9,8 +9,8 @@ In this project you will build such a pipeline.
 ### Notes to this release
 
 #### Link
-GitHub: [https://github.com/MidnightSkyUniverse/nd0821-c2-build-model-workflow-starter]
-W&B: [https://wandb.ai/midnightskyuniverse/nyc_airbnb?workspace=user-midnightskyuniverse]
+- GitHub: [https://github.com/MidnightSkyUniverse/nd0821-c2-build-model-workflow-starter]
+- W&B: [https://wandb.ai/midnightskyuniverse/nyc_airbnb?workspace=user-midnightskyuniverse]
 
 #### Future updates
 ```
@@ -24,12 +24,12 @@ df = df[idx].copy()
 idx = df['last_review'].gt(pd.Timestamp(2013, 1, 1, 12))
 df = df[idx].copy()
 ```
-Those two steps will eliminate majority of entries with null cells
+Those teps will remove majority of entries with null cells
 EDA notebook contains scatterplot chart showing that most of entries that
 have not received any reviewes since 2012, have very low number of reviews
 #### Performance of this model
-MEA: 31.052
-MEA in test: 31.432
+-MEA: 31.052
+-MEA in test: 31.432
 
 
 ## Table of contents
