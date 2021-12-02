@@ -28,8 +28,8 @@ Those teps will remove majority of entries with null cells
 EDA notebook contains scatterplot chart showing that most of entries that
 have not received any reviewes since 2012, have very low number of reviews
 #### Performance of this model
--MEA: 31.052
--MEA in test: 31.432
+- MEA: 31.052
+- MEA in test: 31.432
 
 
 ## Table of contents
