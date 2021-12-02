@@ -7,6 +7,11 @@ to be retrained with the same cadence, necessitating an end-to-end pipeline that
 In this project you will build such a pipeline.
 
 ### Notes to this release
+
+#### Link
+GitHub: [https://github.com/MidnightSkyUniverse/nd0821-c2-build-model-workflow-starter]
+W&B: [https://wandb.ai/midnightskyuniverse/nyc_airbnb?workspace=user-midnightskyuniverse]
+
 #### Future updates
 ```
 # Drop entries where minimum_nights > 365
