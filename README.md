@@ -1,31 +1,14 @@
 # Build an ML Pipeline for Short-Term Rental Prices in NYC
-You are working for a property management company renting rooms and properties for short periods of 
-time on various rental platforms. You need to estimate the typical price for a given property based 
-on the price of similar properties. Your company receives new data in bulk every week. The model needs 
-to be retrained with the same cadence, necessitating an end-to-end pipeline that can be reused.
 
+This is a project that uses mlflow and hydra to build machine learning pipeline
+used to predict rental prices using NYC Airbnb data.
 
-### Notes to this release
-
-#### Link
-- GitHub: [https://github.com/MidnightSkyUniverse/nd0821-c2-build-model-workflow-starter]
-- W&B: [https://wandb.ai/midnightskyuniverse/nyc_airbnb?workspace=user-midnightskyuniverse]
-
-#### Future updates
-```
-# Drop entries where minimum_nights > 365
-idx = df['minimum_nights'].between(0,365,inclusive='both')
-df = df[idx].copy()
-```
-
-#### Performance of this model
-- MEA: 31.052
-- MEA in test: 31.432
 
 
 ## Table of contents
 
 - [Introduction](#build-an-ML-Pipeline-for-Short-Term-Rental-Prices-in-NYC)
+- [Notes to the release](#notes-to-the-release)
 - [Preliminary steps](#preliminary-steps)
   * [Create environment](#create-environment)
   * [Get API key for Weights and Biases](#get-api-key-for-weights-and-biases)
@@ -45,6 +28,25 @@ df = df[idx].copy()
   * [Release the pipeline](#release-the-pipeline)
   * [Train the model on a new data sample](#train-the-model-on-a-new-data-sample)
 - [Cleaning up](#cleaning-up)
+
+## Notes to the release
+
+### Links
+- GitHub: [https://github.com/MidnightSkyUniverse/nd0821-c2-build-model-workflow-starter]
+- W&B: [https://wandb.ai/midnightskyuniverse/nyc_airbnb?workspace=user-midnightskyuniverse]
+
+### About the model
+Random Forest is used to predict the prices. The model was tested with multiple paramenters,
+the config.yaml file contains the values with best MAE:
+- max_tfidf_features: 9
+- n_estimators: 115 
+- max_depth: 14 
+- max_features: 0.5
+ 
+### Best MAE
+- MEA: 31.052
+- MEA in test: 31.432
+
 
 ## Preliminary steps
 
