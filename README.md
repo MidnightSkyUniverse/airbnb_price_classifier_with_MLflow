@@ -4,7 +4,6 @@ time on various rental platforms. You need to estimate the typical price for a g
 on the price of similar properties. Your company receives new data in bulk every week. The model needs 
 to be retrained with the same cadence, necessitating an end-to-end pipeline that can be reused.
 
-In this project you will build such a pipeline.
 
 ### Notes to this release
 
@@ -19,14 +18,6 @@ idx = df['minimum_nights'].between(0,365,inclusive='both')
 df = df[idx].copy()
 ```
 
-```
-# Drop entries which have not got a reivew since 2013
-idx = df['last_review'].gt(pd.Timestamp(2013, 1, 1, 12))
-df = df[idx].copy()
-```
-Those teps will remove majority of entries with null cells
-EDA notebook contains scatterplot chart showing that most of entries that
-have not received any reviewes since 2012, have very low number of reviews
 #### Performance of this model
 - MEA: 31.052
 - MEA in test: 31.432
@@ -36,10 +27,8 @@ have not received any reviewes since 2012, have very low number of reviews
 
 - [Introduction](#build-an-ML-Pipeline-for-Short-Term-Rental-Prices-in-NYC)
 - [Preliminary steps](#preliminary-steps)
-  * [Fork the Starter Kit](#fork-the-starter-kit)
   * [Create environment](#create-environment)
   * [Get API key for Weights and Biases](#get-api-key-for-weights-and-biases)
-  * [Cookie cutter](#cookie-cutter)
   * [The configuration](#the-configuration)
   * [Running the entire pipeline or just a selection of steps](#Running-the-entire-pipeline-or-just-a-selection-of-steps)
   * [Pre-existing components](#pre-existing-components)
@@ -58,26 +47,9 @@ have not received any reviewes since 2012, have very low number of reviews
 - [Cleaning up](#cleaning-up)
 
 ## Preliminary steps
-### Fork the Starter kit
-Go to [https://github.com/udacity/nd0821-c2-build-model-workflow-starter](https://github.com/udacity/nd0821-c2-build-model-workflow-starter)
-and click on `Fork` in the upper right corner. This will create a fork in your Github account, i.e., a copy of the
-repository that is under your control. Now clone the repository locally so you can start working on it:
-
-```
-git clone https://github.com/[your github username]/nd0821-c2-build-model-workflow-starter.git
-```
-
-and go into the repository:
-
-```
-cd nd0821-c2-build-model-workflow-starter
-```
-Commit and push to the repository often while you make progress towards the solution. Remember 
-to add meaningful commit messages.
 
 ### Create environment
-Make sure to have conda installed and ready, then create a new environment using the ``environment.yml``
-file provided in the root of the repository and activate it:
+Using conda or miniconda install virtual environment:
 
 ```bash
 > conda env create -f environment.yml
@@ -98,54 +70,10 @@ You should see a message similar to:
 wandb: Appending key for api.wandb.ai to your netrc file: /home/[your username]/.netrc
 ```
 
-### Cookie cutter
-In order to make your job a little easier, you are provided a cookie cutter template that you can use to create 
-stubs for new pipeline components. It is not required that you use this, but it might save you from a bit of 
-boilerplate code. Just run the cookiecutter and enter the required information, and a new component 
-will be created including the `conda.yml` file, the `MLproject` file as well as the script. You can then modify these
-as needed, instead of starting from scratch.
-For example:
-
-```bash
-> cookiecutter cookie-mlflow-step -o src
-
-step_name [step_name]: basic_cleaning
-script_name [run.py]: run.py
-job_type [my_step]: basic_cleaning
-short_description [My step]: This steps cleans the data
-long_description [An example of a step using MLflow and Weights & Biases]: Performs basic cleaning on the data and save the results in Weights & Biases
-parameters [parameter1,parameter2]: parameter1,parameter2,parameter3
-```
-
-This will create a step called ``basic_cleaning`` under the directory ``src`` with the following structure:
-
-```bash
-> ls src/basic_cleaning/
-conda.yml  MLproject  run.py
-```
-
-You can now modify the script (``run.py``), the conda environment (``conda.yml``) and the project definition 
-(``MLproject``) as you please.
-
-The script ``run.py`` will receive the input parameters ``parameter1``, ``parameter2``,
-``parameter3`` and it will be called like:
-
-```bash
-> mlflow run src/step_name -P parameter1=1 -P parameter2=2 -P parameter3="test"
-```
-
 ### The configuration
 As usual, the parameters controlling the pipeline are defined in the ``config.yaml`` file defined in
 the root of the starter kit. We will use Hydra to manage this configuration file. 
-Open this file and get familiar with its content. Remember: this file is only read by the ``main.py`` script 
-(i.e., the pipeline) and its content is
-available with the ``go`` function in ``main.py`` as the ``config`` dictionary. For example,
-the name of the project is contained in the ``project_name`` key under the ``main`` section in
-the configuration file. It can be accessed from the ``go`` function as 
-``config["main"]["project_name"]``.
 
-NOTE: do NOT hardcode any parameter when writing the pipeline. All the parameters should be 
-accessed from the configuration file.
 
 ### Running the entire pipeline or just a selection of steps
 In order to run the pipeline when you are developing, you need to be in the root of the starter kit, 
@@ -226,20 +154,10 @@ This will iterate over all the environments created by `mlflow` and remove them.
 ## Instructions
 
 The pipeline is defined in the ``main.py`` file in the root of the starter kit. The file already
-contains some boilerplate code as well as the download step. Your task will be to develop the
-needed additional step, and then add them to the ``main.py`` file.
+contains some boilerplate code as well as the download step. 
 
-__*NOTE*__: the modeling in this exercise should be considered a baseline. We kept the data cleaning and the modeling 
-simple because we want to focus on the MLops aspect of the analysis. It is possible with a little more effort to get
-a significantly-better model for this dataset.
 
 ### Exploratory Data Analysis (EDA)
-The scope of this section is to get an idea of how the process of an EDA works in the context of
-pipelines, during the data exploration phase. In a real scenario you would spend a lot more time
-in this phase, but here we are going to do the bare minimum.
-
-NOTE: remember to add some markdown cells explaining what you are about to do, so that the
-notebook can be understood by other people like your colleagues
 
 1. The ``main.py`` script already comes with the download step implemented. Run the pipeline to 
    get a sample of the data. The pipeline will also upload it to Weights & Biases:
@@ -259,54 +177,18 @@ notebook can be understood by other people like your colleagues
    ```bash
    > mlflow run src/eda
    ```
-   This will install Jupyter and all the dependencies for `pandas-profiling`, and open a Jupyter notebook instance.
-   Click on New -> Python 3 and create a new notebook. Rename it `EDA` by clicking on `Untitled` at the top, beside the
-   Jupyter logo.
-3. Within the notebook, fetch the artifact we just created (``sample.csv``) from W&B and read 
-   it with pandas:
-    
-    ```python
-    import wandb
-    import pandas as pd
-    
-    run = wandb.init(project="nyc_airbnb", group="eda", save_code=True)
-    local_path = wandb.use_artifact("sample.csv:latest").file()
-    df = pd.read_csv(local_path)
-    ```
-    Note that we use ``save_code=True`` in the call to ``wandb.init`` so the notebook is uploaded and versioned
-    by W&B.
 
-4. Using `pandas-profiling`, create a profile:
-   ```python
-   import pandas_profiling
-   
-   profile = pandas_profiling.ProfileReport(df)
-   profile.to_widgets()
-   ```
-   what do you notice? Look around and see what you can find. 
-   
-   For example, there are missing values in a few columns and the column `last_review` is a 
-   date but it is in string format. Look also at the `price` column, and note the outliers. There are some zeros and 
-   some very high prices. After talking to your stakeholders, you decide to consider from a minimum of $ 10 to a 
-   maximum of $ 350 per night.
-   
-5. Fix some of the little problems we have found in the data with the following code:
-    
-   ```python
-   # Drop outliers
-   min_price = 10
-   max_price = 350
-   idx = df['price'].between(min_price, max_price)
-   df = df[idx].copy()
-   # Convert last_review to datetime
-   df['last_review'] = pd.to_datetime(df['last_review'])
-   ```
-   Note how we did not impute missing values. We will do that in the inference pipeline, so we will be able to handle
-   missing values also in production.
-6. Create a new profile or check with ``df.info()`` that all obvious problems have been solved
-7. Terminate the run by running `run.finish()`
-8. Save the notebook, then close it (File -> Close and Halt). In the main Jupyter notebook page, click Quit in the
-   upper right to stop Jupyter. This will also terminate the mlflow run. DO NOT USE CRTL-C
+3. In jupyter under src/eda there is a file called `EDA.ipynb`
+   The file contains EDA basic analyses that are baseline for data cleaning actions
+   included in 'basic_cleaning' step. 
+
+    Note that we use ``save_code=True`` in the call to ``wandb.init`` so 
+	the notebook is uploaded and versioned by W&B.
+
+4. Terminate the run by running `run.finish()`
+5. Save the notebook, then close it (File -> Close and Halt). In the main Jupyter notebook page, 
+   click Quit in the upper right to stop Jupyter. This will also terminate the mlflow run. 
+   DO NOT USE CRTL-C
 
 ## Data cleaning
 
@@ -314,95 +196,6 @@ Now we transfer the data processing we have done as part of the EDA to a new ``b
 step that starts from the ``sample.csv`` artifact and create a new artifact ``clean_sample.csv`` 
 with the cleaned data:
 
-1. Make sure you are in the root directory of the starter kit, then create a stub 
-   for the new step. The new step should accept the parameters ``input_artifact`` 
-   (the input artifact), ``output_artifact`` (the name for the output artifact), 
-   ``output_type`` (the type for the output artifact), ``output_description`` 
-   (a description for the output artifact), ``min_price`` (the minimum price to consider)
-   and ``max_price`` (the maximum price to consider):
-   
-   ```bash
-   > cookiecutter cookie-mlflow-step -o src
-   step_name [step_name]: basic_cleaning
-   script_name [run.py]: run.py
-   job_type [my_step]: basic_cleaning
-   short_description [My step]: A very basic data cleaning
-   long_description [An example of a step using MLflow and Weights & Biases]: Download from W&B the raw dataset and apply some basic data cleaning, exporting the result to a new artifact
-   parameters [parameter1,parameter2]: input_artifact,output_artifact,output_type,output_description,min_price,max_price
-   ```
-   This will create a directory ``src/basic_cleaning`` containing the basic files required 
-   for a MLflow step: ``conda.yml``, ``MLproject`` and the script (which we named ``run.py``).
-   
-2. Modify the ``src/basic_cleaning/run.py`` script and the ML project script by filling the 
-   missing information about parameters (note the 
-   comments like ``INSERT TYPE HERE`` and ``INSERT DESCRIPTION HERE``). All parameters should be
-   of type ``str`` except ``min_price`` and ``max_price`` that should be ``float``.
-   
-3. Implement in the section marked ```# YOUR CODE HERE     #``` the steps we 
-   have implemented in the notebook, including downloading the data from W&B. 
-   Remember to use the ``logger`` instance already provided to print meaningful messages to screen. 
-   
-   Make sure to use ``args.min_price`` and ``args.max_price`` when dropping the outliers 
-   (instead of  hard-coding the values like we did in the notebook).
-   Save the results to a CSV file called ``clean_sample.csv`` 
-   (``df.to_csv("clean_sample.csv", index=False)``)
-   **_NOTE_**: Remember to use ``index=False`` when saving to CSV, otherwise the data checks in
-               the next step might fail because there will be an extra ``index`` column
-   
-   Then upload it to W&B using:
-   
-   ```python
-   artifact = wandb.Artifact(
-        args.output_artifact,
-        type=args.output_type,
-        description=args.output_description,
-    )
-    artifact.add_file("clean_sample.csv")
-    run.log_artifact(artifact)
-   ```
-   
-   **_REMEMBER__**: Whenever you are using a library (like pandas), you MUST add it as 
-                    dependency in the ``conda.yml`` file. For example, here we are using pandas 
-                    so we must add it to ``conda.yml`` file, including a version:
-   ```yaml
-   dependencies:
-     - pip=20.3.3
-     - pandas=1.2.3
-     - pip:
-         - wandb==0.10.31
-   ```
-   
-4. Add the ``basic_cleaning`` step to the pipeline (the ``main.py`` file):
-
-   **_WARNING:_**: please note how the path to the step is constructed: 
-                   ``os.path.join(hydra.utils.get_original_cwd(), "src", "basic_cleaning")``.
-   This is necessary because Hydra executes the script in a different directory than the root
-   of the starter kit. You will have to do the same for every step you are going to add to the 
-   pipeline.
-   
-   **_NOTE_**: Remember that when you refer to an artifact stored on W&B, you MUST specify a 
-               version or a tag. For example, here the ``input_artifact`` should be 
-               ``sample.csv:latest`` and NOT just ``sample.csv``. If you forget to do this, 
-               you will see a message like
-               ``Attempted to fetch artifact without alias (e.g. "<artifact_name>:v3" or "<artifact_name>:latest")``
-
-   ```python
-   if "basic_cleaning" in active_steps:
-       _ = mlflow.run(
-            os.path.join(hydra.utils.get_original_cwd(), "src", "basic_cleaning"),
-            "main",
-            parameters={
-                "input_artifact": "sample.csv:latest",
-                "output_artifact": "clean_sample.csv",
-                "output_type": "clean_sample",
-                "output_description": "Data with outliers and null values removed",
-                "min_price": config['etl']['min_price'],
-                "max_price": config['etl']['max_price']
-            },
-        )
-   ```
-5. Run the pipeline. If you go to W&B, you will see the new artifact type `clean_sample` and within it the 
-   `clean_sample.csv` artifact
 
 ### Data testing
 After the cleaning, it is a good practice to put some tests that verify that the data does not
