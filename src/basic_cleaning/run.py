@@ -19,8 +19,6 @@ def go(args):
 
     # Download input artifact. This will also log that this script is using this
     # particular version of the artifact
-    # artifact_local_path = run.use_artifact(args.input_artifact).file()
-
     logger.info('Cleaning data') 
     artifact_local_path = run.use_artifact(args.input_artifact).file()
 
@@ -36,7 +34,13 @@ def go(args):
     df['last_review'] = pd.to_datetime(df['last_review'])    
 
     # Remove entries out of NY location
+    logger.info('Removing listings from outside of NY') 
     idx = df['longitude'].between(-74.25, -73.50) & df['latitude'].between(40.5, 41.2)
+    df = df[idx].copy()
+
+    # Drop entries where minimum_nights > 365
+    logger.info('Removing listings with minimum_nights > 365') 
+    idx = df['minimum_nights'].between(0,365,inclusive='both')
     df = df[idx].copy()
 
     filename = args.output_artifact
@@ -54,7 +58,6 @@ def go(args):
 
     #os.remove(filename)
  
-
     
 
 if __name__ == "__main__":

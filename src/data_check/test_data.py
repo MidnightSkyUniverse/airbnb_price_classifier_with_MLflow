@@ -60,10 +60,6 @@ def test_similar_neigh_distrib(data: pd.DataFrame, ref_data: pd.DataFrame, kl_th
     assert scipy.stats.entropy(dist1, dist2, base=2) < kl_threshold
 
 
-########################################################
-# Implement here test_row_count and test_price_range   #
-########################################################
-
 def test_row_count(data):
     """
     Test if we have reasonable amount of data
@@ -77,4 +73,17 @@ def test_price_range(data: pd.DataFrame, min_price: float, max_price:float):
     """
     assert data['price'].between(min_price, max_price).all()
 
+
+def test_minimum_nights(data):
+    """
+    Test if we have only listings available for <=365 days
+    """
+    assert data['minimum_nights'].between(0,365,inclusive='both').all()
+
+
+#def test_minimum_nights(data):
+#    """
+#    Test if the listings have reviews after Jan 2013
+#    """
+#    assert data['last_review'].gt(pd.Timestamp(2013, 1, 1, 12))
 
