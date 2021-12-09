@@ -120,10 +120,8 @@ modeling -> random_forest -> n_estimators to 10 and etl->min_price to 50:
 ```
 
 Before you decide to test the data after data cleaning step, make sure you add a tag to the artifact
-"clean_sample" with the ``latest`` tag. Add a tag ``reference`` to it by clicking the "+"
-in the Aliases section on the right:
+"clean_sample" with the ``latest`` tag. Add a tag ``reference`` to it.
 
-![reference tag](images/wandb-tag-data-test.png "adding a reference tag")
  
 
 ```bash
