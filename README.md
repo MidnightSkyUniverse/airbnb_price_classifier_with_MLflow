@@ -10,7 +10,7 @@ I decided to performed deeper data cleaning than initially suggested as this
 gave me slightly better model.
 
 Once the model was trained and validated with various parameters, I've selected the best performing model 
-and included its parameters in `config.yaml` file. The model trained is Random Forest.
+and included its parameters in `config.yaml` file. The model is based Random Forest algorithm.
 
 Weights & Biases are used as repository of artifacts and runs.
 
@@ -76,10 +76,9 @@ The pipeline is defined in the ``main.py`` file in the root of the starter kit.
 
 ### Exploratory Data Analysis (EDA)
 
-1. EDA
-EDA analyses are in jupyter notebook. This notebook is our sandbox where we test
-our hypotesis and learn about the data. Whatever we decide about the data, is getting implemented
-in Data Cleaning step. 
+1. EDA analyses can be found in jupyter notebook. This is where we test our hypotesis and learn about the data. 
+Whatever we decide about the data, is getting implemented in Data Cleaning step. 
+
 Run the pipeline to get a sample of the data:
    
   ```bash
