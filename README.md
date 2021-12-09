@@ -1,12 +1,17 @@
 # ML Pipeline for Short-Term Rental Prices in NYC
 
-Here is the project I've worked on for Udacity training in DevOps.
-For this project I transformed the code provided with the training as per the instructions.  
+Here is the Machine Learning project I've worked on for Udacity DevOps training.
+We aim to predict rental prices in NYC based on Airbnb data. 
 
-We explore machine learning models and building a pipeline with mlflow and hydra. 
-The end goal is to predict rental prices in NYC based on Airbnb data. 
-The Random Forest model is trained and validated with various parameters. 
-Parameters that got the best MAE are included in the configuration file `config.yaml`
+For this project I updated the code provided with the training so all steps of 
+the machine learning pipeline could be executed. I worked on EDA analyses,
+and with extensive model trianing for two different clean_data subsets,
+I decided to performed deeper data cleaning than initially suggested as this 
+gave me slightly better model.
+
+Once the model was trained and validated with various parameters, I've selected the best performing model 
+and included its parameters in `config.yaml` file.  
+The model trained is Random Forest.
 
 Weights & Biases are used as repository of artifacts and runs.
 
@@ -28,7 +33,6 @@ Weights & Biases are used as repository of artifacts and runs.
   * [Get API key for Weights and Biases](#get-api-key-for-weights-and-biases)
   * [The configuration](#the-configuration)
   * [Running the entire pipeline or just a selection of steps](#Running-the-entire-pipeline-or-just-a-selection-of-steps)
-  * [Pre-existing components](#pre-existing-components)
 - [Instructions](#instructions)
   * [Exploratory Data Analysis (EDA)](#exploratory-data-analysis-eda)
   * [Data cleaning](#data-cleaning)
@@ -57,17 +61,12 @@ Using conda or miniconda install virtual environment:
 ```
 
 ### Get API key for Weights and Biases
-Let's make sure we are logged in to Weights & Biases. Get your API key from W&B by going to 
+Get your API key from W&B by going to 
 [https://wandb.ai/authorize](https://wandb.ai/authorize) and click on the + icon (copy to clipboard), 
 then paste your key into this command:
 
 ```bash
 > wandb login [your API key]
-```
-
-You should see a message similar to:
-```
-wandb: Appending key for api.wandb.ai to your netrc file: /home/[your username]/.netrc
 ```
 
 ### The configuration
@@ -83,9 +82,7 @@ then you can execute as usual:
 >  mlflow run .
 ```
 This will run the entire pipeline.
-
-When developing it is useful to be able to run one step at the time. Say you want to run only
-the ``download`` step. The `main.py` is written so that the steps are defined at the top of the file, in the 
+The `main.py` is written so that the steps are defined at the top of the file, in the 
 ``_steps`` list, and can be selected by using the `steps` parameter on the command line:
 
 ```bash
@@ -105,96 +102,31 @@ modeling -> random_forest -> n_estimators to 10 and etl->min_price to 50:
   -P hydra_options="modeling.random_forest.n_estimators=10 etl.min_price=50"
 ```
 
-### Pre-existing components
-In order to simulate a real-world situation, we are providing you with some pre-implemented
-re-usable components. While you have a copy in your fork, you will be using them from the original
-repository by accessing them through their GitHub link, like:
-
-```python
-_ = mlflow.run(
-                f"{config['main']['components_repository']}/get_data",
-                "main",
-                parameters={
-                    "sample": config["etl"]["sample"],
-                    "artifact_name": "sample.csv",
-                    "artifact_type": "raw_data",
-                    "artifact_description": "Raw file as downloaded"
-                },
-            )
-```
-where `config['main']['components_repository']` is set to 
-[https://github.com/udacity/nd0821-c2-build-model-workflow-starter#components](https://github.com/udacity/nd0821-c2-build-model-workflow-starter/tree/master/components).
-You can see the parameters that they require by looking into their `MLproject` file:
-
-- `get_data`: downloads the data. [MLproject](https://github.com/udacity/nd0821-c2-build-model-workflow-starter/blob/master/components/get_data/MLproject)
-- `train_val_test_split`: segrgate the data (splits the data) [MLproject](https://github.com/udacity/nd0821-c2-build-model-workflow-starter/blob/master/components/train_val_test_split/MLproject)
-
-## In case of errors
-When you make an error writing your `conda.yml` file, you might end up with an environment for the pipeline or one
-of the components that is corrupted. Most of the time `mlflow` realizes that and creates a new one every time you try
-to fix the problem. However, sometimes this does not happen, especially if the problem was in the `pip` dependencies.
-In that case, you might want to clean up all conda environments created by `mlflow` and try again. In order to do so,
-you can get a list of the environments you are about to remove by executing:
-
-```
-> conda info --envs | grep mlflow | cut -f1 -d" "
-```
-
-If you are ok with that list, execute this command to clean them up:
-
-**_NOTE_**: this will remove *ALL* the environments with a name starting with `mlflow`. Use at your own risk
-
-```
-> for e in $(conda info --envs | grep mlflow | cut -f1 -d" "); do conda uninstall --name $e --all -y;done
-```
-
-This will iterate over all the environments created by `mlflow` and remove them.
-
 
 ## Instructions
 
-The pipeline is defined in the ``main.py`` file in the root of the starter kit. The file already
-contains some boilerplate code as well as the download step. 
-
+The pipeline is defined in the ``main.py`` file in the root of the starter kit. 
 
 ### Exploratory Data Analysis (EDA)
 
-1. The ``main.py`` script already comes with the download step implemented. Run the pipeline to 
-   get a sample of the data. The pipeline will also upload it to Weights & Biases:
+1. EDA
+EDA analyses are in jupyter notebook. This notebook is our sandbox where we test
+our hypotesis and learn about the data. Whatever we decide about the data, is getting implemented
+in Data Cleaning step. 
+Run the pipeline to get a sample of the data:
    
   ```bash
   > mlflow run . -P steps=download
   ```
-  
-  You will see a message similar to:
-
-  ```
-  2021-03-12 15:44:39,840 Uploading sample.csv to Weights & Biases
-  ```
-  This tells you that the data is going to be stored in W&B as the artifact named ``sample.csv``.
 
 2. Now execute the `eda` step:
    ```bash
    > mlflow run src/eda
    ```
 
-3. In jupyter under src/eda there is a file called `EDA.ipynb`
-   The file contains EDA basic analyses that are baseline for data cleaning actions
-   included in 'basic_cleaning' step. 
-
-    Note that we use ``save_code=True`` in the call to ``wandb.init`` so 
-	the notebook is uploaded and versioned by W&B.
-
-4. Terminate the run by running `run.finish()`
-5. Save the notebook, then close it (File -> Close and Halt). In the main Jupyter notebook page, 
-   click Quit in the upper right to stop Jupyter. This will also terminate the mlflow run. 
-   DO NOT USE CRTL-C
-
 ## Data cleaning
 
-Now we transfer the data processing we have done as part of the EDA to a new ``basic_cleaning`` 
-step that starts from the ``sample.csv`` artifact and create a new artifact ``clean_sample.csv`` 
-with the cleaned data:
+Now we transfer the data processing we have done as part of the EDA to a new ``basic_cleaning``.
 
 
 ### Data testing
