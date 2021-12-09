@@ -1,14 +1,28 @@
-# Build an ML Pipeline for Short-Term Rental Prices in NYC
+# ML Pipeline for Short-Term Rental Prices in NYC
 
-This is a project that uses mlflow and hydra to build machine learning pipeline
-used to predict rental prices using NYC Airbnb data.
+Here is the project I've worked on for Udacity training in DevOps.
+For this project I transformed the code provided with the training as per the instructions.  
 
+We explore machine learning models and building a pipeline with mlflow and hydra. 
+The end goal is to predict rental prices in NYC based on Airbnb data. 
+The Random Forest model is trained and validated with various parameters. 
+Parameters that got the best MAE are included in the configuration file `config.yaml`
+
+Weights & Biases are used as repository of artifacts and runs.
+
+
+### Links
+- GitHub: [https://github.com/MidnightSkyUniverse/nd0821-c2-build-model-workflow-starter]
+- W&B: [https://wandb.ai/midnightskyuniverse/nyc_airbnb?workspace=user-midnightskyuniverse]
+ 
+### Best MAE
+- MAE: 32.462
+- Test MAE: 32.667
 
 
 ## Table of contents
 
 - [Introduction](#build-an-ML-Pipeline-for-Short-Term-Rental-Prices-in-NYC)
-- [Notes to the release](#notes-to-the-release)
 - [Preliminary steps](#preliminary-steps)
   * [Create environment](#create-environment)
   * [Get API key for Weights and Biases](#get-api-key-for-weights-and-biases)
@@ -29,23 +43,7 @@ used to predict rental prices using NYC Airbnb data.
   * [Train the model on a new data sample](#train-the-model-on-a-new-data-sample)
 - [Cleaning up](#cleaning-up)
 
-## Notes to the release
 
-### Links
-- GitHub: [https://github.com/MidnightSkyUniverse/nd0821-c2-build-model-workflow-starter]
-- W&B: [https://wandb.ai/midnightskyuniverse/nyc_airbnb?workspace=user-midnightskyuniverse]
-
-### About the model
-Random Forest is used to predict the prices. The model was tested with multiple paramenters,
-the config.yaml file contains the values with best MAE:
-- max_tfidf_features: 9
-- n_estimators: 115 
-- max_depth: 14 
-- max_features: 0.5
- 
-### Best MAE
-- MEA: 31.052
-- MEA in test: 31.432
 
 
 ## Preliminary steps
