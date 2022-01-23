@@ -1,4 +1,8 @@
-# ML Pipeline for Short-Term Rental Prices in NYC
+![name-shield]
+[![LinkedIn][linkedin-shield]][linkedin-url]
+
+
+## ML Pipeline for Short-Term Rental Prices in NYC
 
 Here is the Machine Learning project I've worked on for Udacity DevOps training.
 We aim to predict rental prices in NYC based on Airbnb data. 
@@ -175,3 +179,9 @@ train the model on a new sample of data that our company received (``sample2.csv
 ## License
 
 [License](LICENSE.txt)
+
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[name-shield]: https://img.shields.io/badge/Author-Ali%20Binkowska-blueviolet?style=for-the-badge
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
+[linkedin-url]: https://linkedin.com/in/alibinkowska
