@@ -1,4 +1,4 @@
-name: nyc_airbnb_2
+name: airbnb__MLflow
 channels:
   - conda-forge
   - defaults
