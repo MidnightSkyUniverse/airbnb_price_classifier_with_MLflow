@@ -6,7 +6,7 @@ import argparse
 import logging
 import wandb
 import pandas as pd
-
+import os
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)-15s %(message)s")
 logger = logging.getLogger()
